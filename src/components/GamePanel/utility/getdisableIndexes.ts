@@ -1,7 +1,7 @@
 export const getDisabledIndexes = (options, correctAnswer, lifeline) => {
     console.log(options, correctAnswer);
   
-    let incorrectIndexes = options
+    const incorrectIndexes = options
       .map((option, index) => (option !== correctAnswer ? index : null))
       .filter((index) => index !== null);
   
@@ -14,7 +14,7 @@ export const getDisabledIndexes = (options, correctAnswer, lifeline) => {
     }
   
     if (lifeline === "phoneFriend") {
-      let randomCount = Math.floor(Math.random() * 3) + 1; // 1, 2 ya 3 randomly disable
+      const randomCount = Math.floor(Math.random() * 3) + 1; // 1, 2 ya 3 randomly disable
       return incorrectIndexes.sort(() => 0.5 - Math.random()).slice(0, randomCount);
     }
   

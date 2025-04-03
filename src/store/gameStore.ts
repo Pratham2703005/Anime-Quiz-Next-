@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-interface QuizQuestion {
+export interface QuizQuestion {
   question: string;
   correct_ans: string;
   incorrect_ans: string[];

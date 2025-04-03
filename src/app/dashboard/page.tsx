@@ -2,28 +2,35 @@
 
 import { useEffect, useState } from "react"
 import { ArrowLeft, Medal, Trophy, Crown, Sparkles, Coins, User, Shield } from "lucide-react"
-import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
-import { useUserStore } from "@/store/userStore"
+import { UserInterface, useUserStore } from "@/store/userStore"
 import { formatCurrency } from "@/store/userStore"
 import { SpinningCubeLoader } from "@/components/spinning-cube-loader"
 import { motion } from "framer-motion"
+import Image from "next/image"
+
+type DashboardUsersInterface = {
+  coins : number;
+  id : string;
+  profilePic: string;
+  username : string;
+}
 
 export default function Dashboard() {
-  const [users, setUsers] = useState([])
+  const [users, setUsers] = useState<DashboardUsersInterface[]>([])
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState("leaderboard")
   const router = useRouter()
-  const user = useUserStore((state) => state.user)
+  const user:UserInterface|null = useUserStore((state) => state.user)
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchUsers = async ():Promise<void> => {
       try {
-        if(user?.username === undefined)router.push('/');
         const res = await fetch("/api/get-users")
         const data = await res.json()
         setUsers(data.users)
+        console.log(data.users);
       } catch (error) {
         console.error("Failed to fetch users", error)
       } finally {
@@ -31,7 +38,7 @@ export default function Dashboard() {
       }
     }
     fetchUsers()
-  }, [])
+  }, [user?.username, router]);
 
   const getRankIcon = (index: number) => {
     if (index === 0) return <Crown className="h-5 w-5 text-yellow-400" />
@@ -41,7 +48,7 @@ export default function Dashboard() {
   }
 
   // Find current user's rank
-  const currentUserRank = users.findIndex((u) => user && u.username === user.username)
+  const currentUserRank = users.findIndex((u) => user?.username && u.username === user.username)
 
   return (
     <div className=" max-h-screen bg-black/60 backdrop-blur-md inset-0 fixed flex flex-col ">
@@ -57,14 +64,6 @@ export default function Dashboard() {
           style={{ animationDelay: "2s" }}
         ></div>
 
-        {/* Anime-style decorative lines */}
-        {/* <div className="absolute top-0 left-0 w-full h-full opacity-10">
-          <div className="absolute top-[10%] left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-purple-500 to-transparent"></div>
-          <div className="absolute top-[30%] left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-indigo-500 to-transparent"></div>
-          <div className="absolute top-[70%] left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-purple-500 to-transparent"></div>
-          <div className="absolute top-0 left-[20%] w-[1px] h-full bg-gradient-to-b from-transparent via-indigo-500 to-transparent"></div>
-          <div className="absolute top-0 left-[80%] w-[1px] h-full bg-gradient-to-b from-transparent via-purple-500 to-transparent"></div>
-        </div> */}
       </div>
 
       {/* Navbar */}
@@ -99,15 +98,6 @@ export default function Dashboard() {
           transition={{ duration: 0.5 }}
           className="max-w-7xl mx-auto h-full"
         >
-          {/* Page title */}
-          {/* <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-indigo-200 mb-2">
-              Anime Masters
-            </h1>
-            <p className="text-indigo-300 text-lg">Compete with other players and climb the ranks!</p>
-          </div> */}
-
-          {/* Tabs */}
           
 
           {loading ? (
@@ -151,10 +141,6 @@ export default function Dashboard() {
                 {/* Top 3 players */}
                 <div className="w-7/10 h-full">
                   <div className="w-full h-[90%] overflow-y-auto bg-slate-800/50 backdrop-blur-sm rounded-xl border border-purple-500/30 shadow-xl scrollbar-thin scrollbar-thumb-purple-500 scrollbar-track-slate-700">
-
-                    {/* <div className="p-4 bg-gradient-to-r from-purple-900 to-indigo-900 border-b border-purple-500/30">
-                      <h2 className="text-xl font-bold text-white">Full Leaderboard</h2>
-                    </div> */}
 
                     <div className="overflow-x-auto">
                       <table className="w-full">
@@ -220,7 +206,7 @@ export default function Dashboard() {
                                     ></div>
                                     <div className="relative">
                                       <Image
-                                        src={user.profilePic || "/placeholder.svg"}
+                                        src={user?.profilePic || "/placeholder.svg"}
                                         alt="Profile Picture"
                                         width={40}
                                         height={40}
@@ -297,7 +283,7 @@ export default function Dashboard() {
                             <div className="absolute inset-0 rounded-full bg-gray-300/20 blur-md"></div>
                             <div className="relative h-full w-full flex items-center justify-center">
                               {users[1].profilePic ? (
-                                <img
+                                <Image
                                   src={users[1].profilePic || "/placeholder.svg"}
                                   alt="2nd Place"
                                   width={96}
@@ -330,7 +316,7 @@ export default function Dashboard() {
                           <div className="absolute inset-0 rounded-full bg-yellow-400/20 blur-md animate-pulse"></div>
                           <div className="relative h-full w-full flex items-center justify-center">
                             {users[0].profilePic ? (
-                              <img
+                              <Image
                                 src={users[0].profilePic || "/placeholder.svg"}
                                 alt="1st Place"
                                 width={128}
@@ -363,7 +349,7 @@ export default function Dashboard() {
                             <div className="absolute inset-0 rounded-full bg-amber-600/20 blur-md"></div>
                             <div className="relative h-full w-full flex items-center justify-center">
                               {users[2].profilePic ? (
-                                <img
+                                <Image
                                   src={users[2].profilePic || "/placeholder.svg"}
                                   alt="3rd Place"
                                   width={96}
@@ -462,7 +448,7 @@ export default function Dashboard() {
                             <div className="absolute inset-0 rounded-full bg-purple-600/20 blur-lg"></div>
                             <div className="h-24 w-24 rounded-full border-4 border-purple-500/70 overflow-hidden bg-slate-800 shadow-xl relative">
                               {user?.profilePic ? (
-                                <img
+                                <Image
                                   src={user.profilePic || "/placeholder.svg"}
                                   alt="Your Profile"
                                   width={96}
@@ -510,15 +496,6 @@ export default function Dashboard() {
               )}
             </>
           )}
-
-          {/* <div className="flex justify-center mt-8">
-            <Button
-              onClick={() => router.push("/")}
-              className="px-8 py-2 h-auto bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white shadow-lg text-lg font-medium rounded-xl"
-            >
-              Return to Home
-            </Button>
-          </div> */}
         </motion.div>
       </div>
     </div>

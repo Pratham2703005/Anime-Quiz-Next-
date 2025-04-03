@@ -6,7 +6,7 @@ import CelebButton from "../ui/CelebButton"
 import { formatCurrency, useUserStore } from "@/store/userStore"
 import { useRouter } from "next/navigation"
 
-const GameEnd = ({ username, score, winningAmount }: { username: string; score: number; winningAmount: number }) => {
+const GameEnd = ({ username = 'guest', score, winningAmount }: { username: string; score: number; winningAmount: number }) => {
   const { user, setUser } = useUserStore((state) => state)
   const percentage = Math.round((score / 16) * 100)
   const router = useRouter()
@@ -18,7 +18,7 @@ const GameEnd = ({ username, score, winningAmount }: { username: string; score: 
     const updateUserData = async () => {
       setLoading(true)
       try {
-        if(user===null || user.username === undefined) router.push('/');
+        
         const response = await fetch("/api/update-user-coins", {
           method: "POST",
           headers: {
@@ -31,9 +31,9 @@ const GameEnd = ({ username, score, winningAmount }: { username: string; score: 
         if (data.user === undefined) throw new Error("Server Error")
 
         setUser({
-          username: user?.username,
-          ranking: user?.ranking,
-          profilePic: user?.profilePic,
+          username: user?.username || 'guest',
+          ranking: user?.ranking || 0,
+          profilePic: user?.profilePic || 'nothing',
           coins: Number(data.user.coins),
           coinString: formatCurrency(data.user.coins),
         })

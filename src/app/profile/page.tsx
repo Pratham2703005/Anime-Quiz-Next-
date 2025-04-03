@@ -4,11 +4,12 @@ import { useEffect, useState } from "react"
 import { useUserStore } from "@/store/userStore"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Pencil, Check, X, ArrowLeft, Trophy, Coins, User, Star, Award, Shield, Zap } from "lucide-react"
+import { Pencil, Check, X, ArrowLeft, Trophy, Coins, User, Star, Zap } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { SpinningCubeLoader } from "@/components/spinning-cube-loader"
 import { motion } from "framer-motion"
+import Image from "next/image"
 
 export default function Profile() {
   const router = useRouter()
@@ -157,7 +158,7 @@ export default function Profile() {
                 <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 blur-lg opacity-70 animate-pulse"></div>
                 <div className="h-32 w-32 md:h-40 md:w-40 rounded-full border-4 border-purple-500/70 overflow-hidden bg-slate-800 shadow-xl relative">
                   {user?.profilePic ? (
-                    <img
+                    <Image
                       src={user.profilePic || "/placeholder.svg"}
                       alt="Profile Picture"
                       width={160}

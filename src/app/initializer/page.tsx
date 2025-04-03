@@ -6,16 +6,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import { ArrowLeft, Sparkles } from "lucide-react"
-import { useGameStore } from "@/store/gameStore"
+import { QuizQuestion, useGameStore } from "@/store/gameStore"
 import { getQuizQuestions2 } from "@/actions/getQuizQuestions2"
 import { SpinningCubeLoader } from "@/components/spinning-cube-loader"
-import { useUserStore } from "@/store/userStore"
 
 const Initializer = () => {
   const router = useRouter()
   const { category, difficulty, setCategory, setDifficulty, setQuizQuestions } = useGameStore()
   const [loading, setLoading] = useState(false)
-  const {user} = useUserStore((s)=>s);
   const { resetGameStore } = useGameStore((s) => s)
 
   useEffect(() => {
@@ -30,8 +28,7 @@ const Initializer = () => {
 
     setLoading(true)
     try {
-      if(user===null || user.username === undefined) router.push('/');
-      const questions = await getQuizQuestions2(category, difficulty)
+      const questions:QuizQuestion[] = await getQuizQuestions2(category, difficulty) as QuizQuestion[];
       setQuizQuestions(questions)
       setCategory(category)
       setDifficulty(difficulty)

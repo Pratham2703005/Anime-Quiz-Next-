@@ -11,7 +11,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
   isOpen,
   onConfirm,
   onCancel,
-  selectedLifeline
+  selectedLifeline 
 }) => {
   if (!isOpen) return null;
     const lifeLineNames=['Audience Poll','50-50','Phone of Friend'];
@@ -19,7 +19,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
     <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-50">
       <div className="bg-white rounded-lg p-6 max-w-sm w-full mx-4 shadow-xl">
         <h2 className="text-2xl text-gray-800 mb-4">
-        {lifeLineNames[selectedLifeline]}
+        {lifeLineNames[selectedLifeline || 0]}
         </h2>
         <p className="text-gray-600 mb-6 text-xl">
           Are you sure you want to use this life line?

@@ -8,8 +8,8 @@ import ConfirmationDialog from "./ConfirmationDialog";
 
 const LifeLines = ({ disable }: { disable: boolean }) => {
   const lifeLines = useGameStore((state) => state.lifeLines);
-  const {activatedLifeLine, setActivatedLifeLine} = useGameStore((state) => state);
-  const useLifeLine = useGameStore((state) => state.useLifeLine);
+  const {setActivatedLifeLine} = useGameStore((state) => state);
+  const setLifLine = useGameStore((state) => state.useLifeLine);
 
   const [selectedLifeline, setSelectedLifeline] = useState<number | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -31,7 +31,7 @@ const LifeLines = ({ disable }: { disable: boolean }) => {
   const handleConfirm = () => {
     if (selectedLifeline !== null) {
       const selectedKey = lifelineKeys[selectedLifeline];
-      useLifeLine(selectedKey);
+      setLifLine(selectedKey);
       setActivatedLifeLine(selectedKey)
 
     }

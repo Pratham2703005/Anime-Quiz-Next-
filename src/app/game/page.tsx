@@ -21,6 +21,13 @@ const MemoizedClockTimer = React.memo(ClockTimer);
 const MemoizedLifeLines = React.memo(LifeLines);
 const MemoizedMoneySideBar = React.memo(MoneySideBar);
 
+type GameStateType = {
+  selectedAnswer : string | null;
+  showNextButton : boolean;
+  options : string[];
+  timeLeft : number;
+  timerActive: boolean;
+}
 const Game = () => {
 
   const {
@@ -37,7 +44,7 @@ const Game = () => {
   const router = useRouter();
   const { user } = useUserStore((state) => state);
 
-  const [gameState, setGameState] = useState({
+  const [gameState, setGameState] = useState<GameStateType>({
     selectedAnswer: null,
     showNextButton: false,
     options: [],
@@ -98,7 +105,7 @@ const Game = () => {
       timerActive: false
     }));
 
-    if (option === currentQuestion.correct_ans) {
+    if (option === currentQuestion?.correct_ans) {
       if (currentQuestionIndex !== 15) {
         setGameState(prev => ({
           ...prev,
@@ -151,7 +158,7 @@ const Game = () => {
     const incorrectAnswers = Array.isArray(currentQuestion?.incorrect_ans) ? currentQuestion.incorrect_ans : [];
     const combinedOptions = [...incorrectAnswers, currentQuestion?.correct_ans];
 
-    setGameState(prev => ({
+    setGameState((prev) => ({
         ...prev,
         selectedAnswer: null,
         showNextButton: false,
@@ -186,7 +193,7 @@ const Game = () => {
   if (gameStatus === "loose" || gameStatus === "quit" || gameStatus === "win") {
     return (
       <GameEnd 
-        username={user.username} 
+        username={user?.username || 'guest'} 
         score={
           gameStatus === "loose" ? (ifLooseIndex === -1 ? 0 : ifLooseIndex + 1) :
           gameStatus === "quit" ? (ifQuitIndex + 1) : 
