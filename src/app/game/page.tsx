@@ -63,7 +63,7 @@ const Game = () => {
       router.push('/');
     }
   }, [quizQuestions.length, router]);
-  if (!currentQuestion) return null;
+ 
   
 
   // Memoize derived values
@@ -140,18 +140,27 @@ const Game = () => {
   }, [currentQuestionIndex, quizQuestions.length, setCurrentQuestionIndex, setGameStatus]);
 
   // Effect to set up new question - runs only when question changes
-  useEffect(() => {
-    const combinedOptions = [...currentQuestion.incorrect_ans, currentQuestion.correct_ans];
-    
+  useEffect(() => { 
+    if (!currentQuestion) {
+        router.push('/');
+        return;
+    }
+
+    console.log(currentQuestion);
+
+    const incorrectAnswers = Array.isArray(currentQuestion?.incorrect_ans) ? currentQuestion.incorrect_ans : [];
+    const combinedOptions = [...incorrectAnswers, currentQuestion?.correct_ans];
+
     setGameState(prev => ({
-      ...prev,
-      selectedAnswer: null,
-      showNextButton: false,
-      timerActive: true,
-      timeLeft: timer,
-      options: shuffleArray(combinedOptions)
+        ...prev,
+        selectedAnswer: null,
+        showNextButton: false,
+        timerActive: true,
+        timeLeft: timer,
+        options: shuffleArray(combinedOptions)
     }));
-  }, [currentQuestion, shuffleArray, timer]);
+}, [currentQuestion, shuffleArray, timer]);
+
 
   // Timer effect with cleanup
   useEffect(() => {
@@ -172,6 +181,8 @@ const Game = () => {
   }, [gameState.timerActive, gameState.timeLeft, timer, setGameStatus]);
 
   // Render appropriate game state
+
+  if (!currentQuestion) return null;
   if (gameStatus === "loose" || gameStatus === "quit" || gameStatus === "win") {
     return (
       <GameEnd 
