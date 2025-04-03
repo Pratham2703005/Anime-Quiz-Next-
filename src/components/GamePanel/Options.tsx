@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 const Options = ({ options, handleOptionClick, selectedAnswer, gameOver, currentQuestion }) => {
   const {activatedLifeLine} = useGameStore((s)=>s);
   console.log("ActivatedLifeLine:" , activatedLifeLine);
-  const [disabledIndexes, setDisabledIndexes] = useState([]);
+  const [disabledIndexes, setDisabledIndexes] = useState<number[]>([]);
   useEffect(()=>{
     setDisabledIndexes(getDisabledIndexes(options, currentQuestion.correct_ans, activatedLifeLine));
   },[activatedLifeLine])
