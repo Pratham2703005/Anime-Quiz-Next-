@@ -212,7 +212,7 @@ const Game = () => {
       )}
       
       {/* Main Quiz Content */}
-      <div className="flex flex-col flex-grow items-center justify-end p-4 relative">
+      <div className="flex flex-col flex-grow items-center justify-between p-4 relative">
         <MemoizedOperateButtonsDiv
           selectedAnswer={gameState.selectedAnswer}
           handleNextQuestion={handleNextQuestion}

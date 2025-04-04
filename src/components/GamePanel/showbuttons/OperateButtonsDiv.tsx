@@ -6,13 +6,17 @@ import QuitButton from './QuitButton'
 const OperateButtonsDiv = ({selectedAnswer,handleNextQuestion,showNextButton}) => {
   const {currentQuestionIndex} = useGameStore((s)=>s);
   return (
-    <div className='absolute top-12 w-full'>
+    <div className='relative w-full flex justify-between'>
+      <div>
         {currentQuestionIndex !== 0 && selectedAnswer===null && (
           <QuitButton />
         )}
+      </div>
+      <div>
         {showNextButton && (
           <NextButton handleNextQuestion={handleNextQuestion} />
         )}
+      </div>
         
     </div>
   )

@@ -1,14 +1,21 @@
 import { prisma } from "@/lib/prisma"
-import { type NextRequest, NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 
 export async function POST(request: NextRequest) {
   try {
     const {name, newName } = await request.json()
-
+    console.log("recieved on server :", name, " ",newName);
     if (!name || name.trim() === "" || !newName || newName.trim()==="" ) {
       return NextResponse.json({ error: "Username cannot be empty" }, { status: 400 })
     }
 
+    const isUserAlreadyExist = await prisma.user.findUnique({
+      where: {username : newName}
+    })
+    console.log("--------",isUserAlreadyExist);
+    if(isUserAlreadyExist){
+      throw new Error("Username Already Exist");
+    }
     const user = await prisma.user.update({
         where : { username: name},
         data: {username: newName}
@@ -20,7 +27,7 @@ export async function POST(request: NextRequest) {
     })
   } catch (error) {
     console.error("Error updating username:", error)
-    return NextResponse.json({ error: "Failed to update username" }, { status: 500 })
+    return NextResponse.json({ error: error }, { status: 500 })
   }
 }
 
