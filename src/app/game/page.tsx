@@ -272,8 +272,6 @@ const Game = () => {
     )
   }
 
-  // Import ResponsiveMoneySidebar
-  console.log("RENDER");
   return (
     <div className="w-full h-screen bg-black/30 pb-4 overflow-hidden">
       {/* Mobile Money Sidebar */}
@@ -343,7 +341,7 @@ const Game = () => {
       {/* Mobile Layout */}
       <div className="md:hidden flex flex-col w-full h-full justify-between">
   {/* Top Bar with Audio Controls and Lifelines */}
-  <div>
+  <div className="h-4/7">
     <div className="flex justify-between items-center p-2 pt-4">
       <div className="flex items-center opacity-0 sm:opacity-1">
         <HandleAudio toggleMute={toggleMute} setVolume={setVolume} isMuted={isMuted} volume={volume} />
@@ -357,7 +355,7 @@ const Game = () => {
       {currentQuestionIndex !== 15 && <LifeLines disable={gameState.selectedAnswer !== null} />}
     </div>
 
-    <div className="flex justify-between items-center px-4 py-2">
+    <div className="flex justify-between h-1/2 items-center px-4 py-2">
       <div className="flex items-center">
         {currentQuestionIndex !== 0 && gameState.selectedAnswer === null ? (
           <QuitButton />
@@ -366,7 +364,7 @@ const Game = () => {
         )}
       </div>
       <div className="flex justify-center">
-        {timer > 0 && <ClockTimer timeLeft={gameState.timeLeft} totalTime={timer} size={170} />}
+        {timer > 0 && <ClockTimer timeLeft={gameState.timeLeft} totalTime={timer} size={200} />}
       </div>
       <div className="flex items-center">
         {gameState.showNextButton ? (
@@ -379,7 +377,7 @@ const Game = () => {
   </div>
 
   {/* Bottom: Questions and Options */}
-  <div>
+  <div className="pb-10">
     <div className="px-2">
       <Questions currentQuestionIndex={currentQuestionIndex} ques={currentQuestion.question} />
     </div>
