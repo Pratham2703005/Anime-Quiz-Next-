@@ -7,6 +7,7 @@ const QuitButton = () => {
   
   const handleClick = () => {
     setGameStatus("quit");
+
   };
 
   // Add the styles to the document when the component mounts

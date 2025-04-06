@@ -1,6 +1,5 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import url('https://fonts.googleapis.com/css2?family=Jersey+15&display=swap');
 
 @custom-variant dark (&:is(.dark *));
 
@@ -78,10 +77,12 @@
   }
 }
 *{
-    font-family: "Jersey 15", serif !important;
+  font-family:  sans-serif !important;
 }
+
+
 body{
-    font-family: "Jersey 15", serif !important;
+    
     background-image: url('/backgound.jpg');    
     background-size: cover;
     background-position: center;

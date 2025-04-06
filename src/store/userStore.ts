@@ -10,8 +10,16 @@ export interface UserInterface {
 
 interface UserStore {
   user: UserInterface | null;
-  setUser: (user: UserInterface) => void;
+  setUser: (user: UserInterface | ((prev: UserInterface) => UserInterface)) => void;
 }
+
+export const useUserStore = create<UserStore>((set) => ({
+  user: null,
+  setUser: (user) =>
+    set((state) => ({
+      user: typeof user === "function" ? (user as (prev: UserInterface) => UserInterface)(state.user!) : user,
+    })),
+}));
 
 export const formatCurrency = (num: number): string => {
   if (num >= 1e7) return (num / 1e7).toFixed(1).replace(/\.00$/, "") + "Cr";
@@ -19,7 +27,3 @@ export const formatCurrency = (num: number): string => {
   if (num >= 1e3) return (num / 1e3).toFixed(1).replace(/\.00$/, "") + "k";
   return num.toString();
 };
-export const useUserStore = create<UserStore>((set) => ({
-  user: null,
-  setUser: (user) => set({user}),
-}));

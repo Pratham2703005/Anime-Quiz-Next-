@@ -45,8 +45,8 @@ const LifeLines = ({ disable }: { disable: boolean }) => {
   };
 
   return (
-    <div className="h-screen flex flex-col justify-center">
-      <div className="flex max-h-[50%] flex-col items-center justify-evenly h-full bg-slate-800/80 py-6 px-3 pr-5 border-r-[#8200db] border-t-[#8200db] border-b-[#8200db] border-r-4 border-t-4 border-b-4 rounded-r-2xl shadow-lg shadow-purple-500/20">
+    <div className="flex flex-col justify-center flex-grow ">
+      <div className="flex max-h-[50%] flex-col items-center justify-evenly h-full bg-slate-800/80 py-6 px-3 border-[#8200db] border-4 rounded-2xl shadow-lg shadow-purple-500/20">
         {lifelineKeys.map((lifeline, index) => (
           lifeLines[lifeline] && (
             <motion.div
@@ -64,13 +64,13 @@ const LifeLines = ({ disable }: { disable: boolean }) => {
                   <Image
                     src={images[index] || "/placeholder.svg"}
                     alt={`Lifeline - ${titles[index]}`}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-fill"
                     width={64}
                     height={64}
                   />
                 </div>
               </div>
-              <div className="absolute -right-25 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-purple-800/80 to-slate-800/80 backdrop-blur-sm py-1 px-3 rounded-lg border border-purple-500/30 opacity-0 group-hover:opacity-100 transition-all duration-300 text-sm text-yellow-300 font-medium whitespace-nowrap shadow-lg">
+              <div className={`absolute ${lifeline === 'audiencePoll'? '-right-25': `${lifeline === 'fiftyFifty' ? '-right-18':'-right-28'}`}  top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-purple-800/80 to-slate-800/80 backdrop-blur-sm py-1 px-3 rounded-lg border border-purple-500/30 opacity-0 group-hover:opacity-100 transition-all duration-300 text-sm text-yellow-300 font-medium whitespace-nowrap shadow-lg`}>
                 {titles[index]}
               </div>
             </motion.div>

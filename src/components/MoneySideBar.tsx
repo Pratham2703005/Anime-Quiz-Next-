@@ -10,7 +10,7 @@ const MoneySideBar: React.FC = () => {
     const nextQuestionIndex = currentQuestionIndex >= 15 ? -1 : currentQuestionIndex + 1;
  
     return ( 
-        <aside className="relative h-screen w-[20%] flex flex-col justify-center text-white shadow-lg opacity-100 px-3 bg-slate-900/50 backdrop-blur-sm border-l border-purple-500/30"> 
+        <aside className="relative h-full flex flex-col justify-center text-white shadow-lg opacity-100 px-3 bg-slate-900/50 backdrop-blur-sm border-l border-purple-500/30"> 
             {/* Heading */} 
             <div className="mt-3 rounded-sm p-3 border-b border-purple-500/30 bg-gradient-to-r from-purple-900 to-indigo-900"> 
                 <h2 className="text-center text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-amber-500 font-bold text-lg">

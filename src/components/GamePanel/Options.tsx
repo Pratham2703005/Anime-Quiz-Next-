@@ -6,12 +6,10 @@ import { useEffect, useState } from "react";
 
 const Options = ({ options, handleOptionClick, selectedAnswer, gameOver, currentQuestion }) => {
   const {activatedLifeLine} = useGameStore((s)=>s);
-  console.log("ActivatedLifeLine:" , activatedLifeLine);
   const [disabledIndexes, setDisabledIndexes] = useState<number[]>([]);
   useEffect(()=>{
     setDisabledIndexes(getDisabledIndexes(options, currentQuestion.correct_ans, activatedLifeLine));
   },[activatedLifeLine])
-  console.log("disabled Indexes: ",disabledIndexes);
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-6 relative">
       <AnimatePresence>
@@ -30,7 +28,7 @@ const Options = ({ options, handleOptionClick, selectedAnswer, gameOver, current
               className={`
                 relative w-full group transition-all duration-300
                 focus:outline-none focus:ring-2 focus:ring-opacity-90
-                text-white font-semibold text-lg
+                text-white font-semibold text-md sm:text-lg md:text-2xl
                 px-6 py-4 rounded-lg shadow-lg hover:shadow-xl
                 border-2 border-solid
                 

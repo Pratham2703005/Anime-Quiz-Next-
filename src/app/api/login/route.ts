@@ -41,14 +41,21 @@ export async function POST(req: NextRequest) {
       }
     })
 
+    const allNotifications = await prisma.notification.findMany({
+      where: {recieverUsername: body.username}
+    })
+
     // // Updated user fetch kro taki latest ranking mile
     // user = await prisma.user.findUnique({ where: { username: body.username } });
 
     return NextResponse.json({
-      username: user?.username,
-      profilePic: user?.profilePic,
-      coins: user?.coins,
-      ranking: user?.ranking
+      userInfo :{ 
+        username: user?.username,
+        profilePic: user?.profilePic,
+        coins: user?.coins,
+        ranking: user?.ranking,
+      },
+      notifications: allNotifications
     });
   } catch (error) {
     console.error("Error:", error);

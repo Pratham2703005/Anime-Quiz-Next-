@@ -1,6 +1,7 @@
 import { create } from "zustand";
 
 export interface QuizQuestion {
+  id:string
   question: string;
   correct_ans: string;
   incorrect_ans: string[];

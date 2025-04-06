@@ -1,6 +1,7 @@
 import { useGameStore } from '@/store/gameStore'
 import NextButton from './NextButton'
 import QuitButton from './QuitButton'
+import ReportButton from './ReportButton';
 
 
 const OperateButtonsDiv = ({selectedAnswer,handleNextQuestion,showNextButton}) => {
@@ -9,7 +10,7 @@ const OperateButtonsDiv = ({selectedAnswer,handleNextQuestion,showNextButton}) =
     <div className='relative w-full flex justify-between'>
       <div>
         {currentQuestionIndex !== 0 && selectedAnswer===null && (
-          <QuitButton />
+          <QuitButton/>
         )}
       </div>
       <div>
@@ -17,6 +18,7 @@ const OperateButtonsDiv = ({selectedAnswer,handleNextQuestion,showNextButton}) =
           <NextButton handleNextQuestion={handleNextQuestion} />
         )}
       </div>
+      <ReportButton/>
         
     </div>
   )

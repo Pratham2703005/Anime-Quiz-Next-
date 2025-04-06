@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label"
 import { Gamepad2, Sparkles, User, Lock, AlertCircle, Eye, EyeOff } from "lucide-react"
 import { SpinningCubeLoader } from "@/components/spinning-cube-loader"
 import { motion } from "framer-motion"
+import { useNotifications } from "@/store/notifications"
 
 // Define form field types
 type FormValues = {
@@ -24,6 +25,7 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const { setUser } = useUserStore((state) => state)
+  const {setNotification} = useNotifications((s)=>s);
   
   // Initialize the useForm hook with validation
   const { 
@@ -45,7 +47,10 @@ const Login = () => {
       const responseData = await response.json()
       if (!response.ok) throw new Error(responseData.message || "Login failed")
       console.log("User logged in successfully:", responseData)
-      setUser({ ...responseData, coinString: formatCurrency(responseData.coins) })
+      setUser({ ...responseData.userInfo, coinString: formatCurrency(responseData.userInfo.coins) })
+      const allNotifications = responseData.notifications;
+      setNotification(allNotifications);
+    
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong")
     } finally {
@@ -88,7 +93,7 @@ const Login = () => {
       </nav>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col md:flex-row items-center justify-center p-6 z-10">
+      <div className="flex-1 flex flex-col md:flex-row items-center justify-center [350px]:p-6 z-10">
         {isLoading ? (
           <SpinningCubeLoader customTexts={["Logging you in...", "Preparing your adventure...", "Almost there..."]} />
         ) : (

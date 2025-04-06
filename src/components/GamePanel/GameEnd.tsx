@@ -4,32 +4,40 @@ import { useState, useEffect } from "react"
 import { Trophy, Medal, Coins, Clock, Star } from "lucide-react"
 import CelebButton from "../ui/CelebButton"
 import { formatCurrency, useUserStore } from "@/store/userStore"
-import { useRouter } from "next/navigation"
+import { useGameStore } from "@/store/gameStore"
+import EndProgressBar from "./EndProgressBar"
+import EndButtons from "./EndButtons"
 
 const GameEnd = ({ username = 'guest', score, winningAmount }: { username: string; score: number; winningAmount: number }) => {
   const { user, setUser } = useUserStore((state) => state)
   const percentage = Math.round((score / 16) * 100)
-  const router = useRouter()
   const moneyWon = winningAmount
   const [loading, setLoading] = useState(true)
   const [confettiActive, setConfettiActive] = useState(false)
-
+  const {difficulty } = useGameStore((s)=>s);
+  const [winDifficulty] = useState(() => {
+    if (difficulty === 'easy') return +(Math.random() * (0.5 - 0.2) + 0.2).toFixed(2);
+    if (difficulty === 'medium') return +(Math.random() * (0.8 - 0.5) + 0.5).toFixed(2);
+    return 1;
+  });
+  
+  const actualMoneyWon = Math.floor(moneyWon*winDifficulty);
   useEffect(() => {
+    
     const updateUserData = async () => {
       setLoading(true)
       try {
-        
         const response = await fetch("/api/update-user-coins", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ coins: moneyWon.toLocaleString(), username: username }),
+          body: JSON.stringify({ coins: actualMoneyWon.toLocaleString(), username: username }),
         })
 
         const data = await response.json()
         if (data.user === undefined) throw new Error("Server Error")
-
+        console.log("-----",data);
         setUser({
           username: user?.username || 'guest',
           ranking: user?.ranking || 0,
@@ -47,6 +55,7 @@ const GameEnd = ({ username = 'guest', score, winningAmount }: { username: strin
       }
     }
 
+  
     updateUserData()
   }, [])
 
@@ -90,9 +99,9 @@ const GameEnd = ({ username = 'guest', score, winningAmount }: { username: strin
                     <div className="bg-indigo-900/40 rounded-xl p-3 border border-indigo-500/30">
                       <div className="flex items-center gap-2 mb-1">
                         <Medal className="w-4 h-4 text-yellow-400" />
-                        <h3 className="text-indigo-300">Score</h3>
+                        <h3 className="text-indigo-300">Difficulty</h3>
                       </div>
-                      <p className="text-xl font-bold">{score}/16</p>
+                      <p className="text-xl font-bold">{winDifficulty}x</p>
                     </div>
 
                     <div className="bg-indigo-900/40 rounded-xl p-3 border border-indigo-500/30">
@@ -100,7 +109,7 @@ const GameEnd = ({ username = 'guest', score, winningAmount }: { username: strin
                         <Coins className="w-4 h-4 text-green-400" />
                         <h3 className="text-indigo-300">Prize</h3>
                       </div>
-                      <p className="text-xl font-bold text-green-400">+{moneyWon}</p>
+                      <p className="text-xl font-bold text-green-400">+{actualMoneyWon}</p>
                     </div>
 
                     <div className="bg-indigo-900/40 rounded-xl p-3 border border-indigo-500/30">
@@ -152,86 +161,12 @@ const GameEnd = ({ username = 'guest', score, winningAmount }: { username: strin
                 </div>
 
                 {/* Right column - Progress */}
-                <div className="flex-1 flex flex-col items-center justify-center">
-                  {/* Circular Progress */}
-                  <div className="relative w-40 h-40">
-                    <svg className="w-full h-full" viewBox="0 0 100 100">
-                      <filter id="glow">
-                        <feGaussianBlur stdDeviation="2.5" result="coloredBlur" />
-                        <feMerge>
-                          <feMergeNode in="coloredBlur" />
-                          <feMergeNode in="SourceGraphic" />
-                        </feMerge>
-                      </filter>
-
-                      {/* Background circle */}
-                      <circle
-                        className="text-slate-700/50 stroke-current"
-                        strokeWidth="10"
-                        fill="transparent"
-                        r="45"
-                        cx="50"
-                        cy="50"
-                      />
-
-                      {/* Progress circle with animation */}
-                      <circle
-                        className="text-green-400 stroke-current"
-                        strokeWidth="10"
-                        strokeLinecap="round"
-                        fill="transparent"
-                        r="45"
-                        cx="50"
-                        cy="50"
-                        filter="url(#glow)"
-                        style={{
-                          strokeDasharray: `${2 * Math.PI * 45}`,
-                          strokeDashoffset: `${2 * Math.PI * 45 * (1 - percentage / 100)}`,
-                          transform: "rotate(-90deg)",
-                          transformOrigin: "50% 50%",
-                          transition: "stroke-dashoffset 1.5s ease-in-out",
-                        }}
-                      />
-
-                      {/* Percentage text */}
-                      <text x="50" y="60" className="text-4xl font-bold" fill="currentColor" textAnchor="middle">
-                        {percentage}%
-                      </text>
-                    </svg>
-                  </div>
-
-                  <p className="text-center font-medium text-indigo-300 mt-4 max-w-xs">
-                    {percentage >= 90
-                      ? "Exceptional performance! You're a master!"
-                      : percentage >= 75
-                        ? "Great work! You've performed very well!"
-                        : percentage >= 50
-                          ? "Good job! You've mastered the basics!"
-                          : "Keep practicing to improve your skills!"}
-                  </p>
-                </div>
+                <EndProgressBar percentage={percentage}/>
               </div>
 
               {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4 mt-6">
-                <button
-                  onClick={() => router.push("/initializer")}
-                  disabled={loading}
-                  className="flex-1 py-3 px-6 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 
-                            text-white font-medium transition duration-300 ease-in-out transform hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed
-                            shadow-[0_4px_14px_rgba(79,70,229,0.4)] hover:shadow-[0_6px_20px_rgba(79,70,229,0.6)]"
-                >
-                  {loading ? "Loading..." : "Play Again"}
-                </button>
-                <button
-                  onClick={() => router.push("/")}
-                  disabled={loading}
-                  className="flex-1 py-3 px-6 rounded-xl bg-transparent border border-indigo-500/50 hover:bg-indigo-900/30
-                            text-white font-medium transition duration-300 ease-in-out transform hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed"
-                >
-                  Return Home
-                </button>
-              </div>
+              
+              <EndButtons loading={loading}/>
             </div>
           </div>
         </div>

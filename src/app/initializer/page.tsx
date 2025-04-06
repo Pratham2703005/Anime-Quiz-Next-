@@ -5,10 +5,12 @@ import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
-import { ArrowLeft, Sparkles } from "lucide-react"
+import { Sparkles } from "lucide-react"
 import { QuizQuestion, useGameStore } from "@/store/gameStore"
 import { getQuizQuestions2 } from "@/actions/getQuizQuestions2"
 import { SpinningCubeLoader } from "@/components/spinning-cube-loader"
+import { categories } from "@/ControlData"
+import NavBar from "@/components/NavBar"
 
 const Initializer = () => {
   const router = useRouter()
@@ -57,22 +59,7 @@ const Initializer = () => {
         ></div>
       </div>
 
-      <nav className="w-full px-6 py-4 bg-gradient-to-r from-purple-900 to-indigo-900 text-white shadow-lg z-10">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <div className="flex items-center space-x-2">
-            <Button
-              onClick={() => router.push("/")}
-              variant="ghost"
-              className="p-1 mr-2 hover:bg-white/10 inset-0 hover:text-white text-purple-200 rounded-full"
-            >
-              <ArrowLeft size={20} />
-            </Button>
-            <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-200 to-indigo-100">
-              Play Game
-            </h1>
-          </div>
-        </div>
-      </nav>
+      <NavBar showBackButton title="Play Game" />
 
       {loading ? (
         <div className="flex flex-col items-center justify-center flex-1">
@@ -100,38 +87,40 @@ const Initializer = () => {
                     <SelectValue placeholder="Choose your anime" />
                   </SelectTrigger>
                   <SelectContent className="bg-slate-800 text-white border-purple-500/50">
-                    <SelectItem value="Solo Leveling" className="hover:bg-purple-900/50">
-                      Solo Leveling
-                    </SelectItem>
-                    <SelectItem value="COTE" className="hover:bg-purple-900/50">
-                      Classroom of the Elite
-                    </SelectItem>
-                    <SelectItem value="Death Note" className="hover:bg-purple-900/50">
-                      Death Note
-                    </SelectItem>
-                    <SelectItem value="Naruto" className="hover:bg-purple-900/50">
-                      Naruto
-                    </SelectItem>
+                    {categories.map((c,index)=>(
+                      <SelectItem key={index} value={c.value} className="hover:bg-purple-900/50">
+                        {c.name}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-2 w-full">
                 <label className="text-purple-200 text-sm font-medium ml-1">Select Difficulty</label>
                 <Select onValueChange={(val) => setDifficulty(val as "easy" | "medium" | "hard")}>
                   <SelectTrigger className="w-full bg-slate-800/80 text-white border-purple-500/50 focus:border-purple-400 focus:ring-purple-400 h-12 rounded-xl">
                     <SelectValue placeholder="Choose difficulty" />
                   </SelectTrigger>
-                  <SelectContent className="bg-slate-800 text-white border-purple-500/50">
-                    <SelectItem value="easy" className="hover:bg-purple-900/50 ">
-                      Easy
-                    </SelectItem>
-                    <SelectItem value="medium" className="hover:bg-purple-900/50">
-                      Medium
-                    </SelectItem>
-                    <SelectItem value="hard" className="hover:bg-purple-900/50">
-                      Hard
-                    </SelectItem>
+                  <SelectContent className="bg-slate-800 text-white border-purple-500/50 w-full">
+                  <SelectItem value="easy" className="hover:bg-purple-900/50 w-full">
+                    <div className="flex justify-between w-full">
+                      <span>Easy</span>
+                      <span className="text-sm text-purple-300">(0.2x-0.5x)</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="medium" className="hover:bg-purple-900/50 w-full">
+                    <div className="flex justify-between w-full">
+                      <span>Medium</span>
+                      <span className="text-sm text-purple-300">(0.5x-0.7x)</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="hard" className="hover:bg-purple-900/50 w-full">
+                    <div className="flex  justify-between w-full">
+                      <span>Hard</span>
+                      <span className="text-sm text-purple-300">(1x)</span>
+                    </div>
+                  </SelectItem>
                   </SelectContent>
                 </Select>
               </div>

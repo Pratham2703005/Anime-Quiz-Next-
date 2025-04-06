@@ -31,3 +31,37 @@ model Question {
   difficulty  String
   serial_id   Int?      @default(0)
 }
+
+model ContributionQuestions {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  question String
+  correct_ans String
+  incorrect_ans String[]
+  category String
+  difficulty String
+  username String
+  serial_id Int? @default(0)
+}
+
+enum NotificationType {
+  feedback
+  contribute
+  report
+}
+model Notification {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  recieverUsername String 
+  message String
+  reward Int? @default(0)
+  isClaimed Boolean? @default(false)
+  type NotificationType
+}
+
+
+model Report {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  questionId String
+  username String
+  checkMessage String[] @default([])
+  message String?
+}
