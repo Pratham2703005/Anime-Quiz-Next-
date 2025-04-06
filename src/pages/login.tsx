@@ -93,7 +93,7 @@ const Login = () => {
       </nav>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col md:flex-row items-center justify-center [350px]:p-6 z-10">
+      <div className="flex-1 flex flex-col md:flex-row items-center justify-center [350px]:p-6 z-10 pb-12 sm:pb-0 ">
         {isLoading ? (
           <SpinningCubeLoader customTexts={["Logging you in...", "Preparing your adventure...", "Almost there..."]} />
         ) : (

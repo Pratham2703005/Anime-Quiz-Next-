@@ -55,7 +55,7 @@ export default function Dashboard() {
       <NavBar showBackButton title="Dashboard"/>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-auto sm:overflow-hidden">
         {loading ? (
           <div className="flex-1 flex items-center justify-center">
             <SpinningCubeLoader
@@ -63,7 +63,7 @@ export default function Dashboard() {
             />
           </div>
         ) : (
-          <div className="flex-1 flex flex-col">
+          <div className="flex-1 flex flex-col overflow-auto sm:overflow-hidden">
             {/* Tabs */}
 
             <DashTabs activeTab={activeTab} setActiveTab={setActiveTab}/>
@@ -71,7 +71,7 @@ export default function Dashboard() {
             {/* Content */}
             <div className={`flex-1 h-full px-4 pb-4 ${activeTab === 'leaderboard' ? 'overflow-hidden' : 'overflow-auto'}`}>
               {activeTab === "leaderboard" && (
-                <div className="max-w-5xl h-full flex flex-col justify-evenly mx-auto mt-5 sm:mt-7">
+                <div className="max-w-5xl h-full flex flex-col justify-evenly mx-auto  mt-0 ">
                   {/* Top 3 players */}
                   {users.length > 0 && (
                     <DashTopPlayers length={users.length} firstPlayer={users[0]} secondPlayer={users[0]} thirdPlayer={users[0]} />

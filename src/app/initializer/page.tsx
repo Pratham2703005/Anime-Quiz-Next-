@@ -66,7 +66,7 @@ const Initializer = () => {
           <SpinningCubeLoader />
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center flex-1 p-6 max-w-md w-full">
+        <div className="flex flex-col items-center justify-center flex-1 p-6 max-w-md w-full mb-20 sm:mb-0">
           <div className="w-full bg-black/40 backdrop-blur-md rounded-2xl border border-purple-500/30 p-8 shadow-[0_0_25px_rgba(139,92,246,0.15)]">
             <div className="flex justify-center mb-6">
               <div className="relative">

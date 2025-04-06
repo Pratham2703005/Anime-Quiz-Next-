@@ -105,7 +105,7 @@ const HomePage = () => {
       
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col items-center justify-center gap-6 sm:gap-8 p-4 sm:p-6 z-10">
+      <div className="flex-1 flex flex-col items-center justify-center gap-6 sm:gap-8 p-4 sm:p-6 z-10 mb-15 sm:mb-0">
         <motion.div
           className="text-center mb-2 sm:mb-4"
           initial={{ opacity: 0, y: -20 }}

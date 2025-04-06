@@ -74,7 +74,7 @@ export default function ContributeForm() {
     </div>
      <NavBar showBackButton title="Contribute Question"/>
   
-    <div className="flex-1 overflow-auto py-8 px-4">
+    <div className="flex-1 overflow-auto pb-24 sm:py-8 px-4 ">
       <div className="max-w-3xl mx-auto">
         <Card className="border border-purple-500/30 bg-black/40 backdrop-blur-md shadow-[0_0_25px_rgba(139,92,246,0.15)]">
           <CardContent className="p-6">

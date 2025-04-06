@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect, useCallback, useMemo } from "react"
+import React, { useState, useEffect, useCallback, useMemo, Suspense } from "react"
 import { motion } from "framer-motion"
 import QuitButton from "@/components/GamePanel/showbuttons/QuitButton"
 import NextButton from "@/components/GamePanel/showbuttons/NextButton"
@@ -43,6 +43,10 @@ const Game = () => {
   const { playSound, stopSound, toggleMute, setVolume, isMuted, volume } = useTickAudio()
   const router = useRouter()
   const { user } = useUserStore((state) => state)
+
+  // State for mobile sidebar
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const toggleSidebar = () => setIsSidebarOpen((prev) => !prev)
 
   const [gameState, setGameState] = useState<GameStateType>({
     selectedAnswer: null,
@@ -246,7 +250,7 @@ const Game = () => {
           relative w-full h-full group transition-all duration-300
           focus:outline-none focus:ring-2 focus:ring-opacity-90
           text-white font-semibold text-md sm:text-lg md:text-2xl
-          px-[0.35rem] py-[0.25rem]  sm:px-3 sm:py-2 md:px-6 md:py-4  rounded-lg shadow-lg hover:shadow-xl
+          px-[0.35rem] py-[0.25rem] sm:px-3 sm:py-2 md:px-6 md:py-4 rounded-lg shadow-lg hover:shadow-xl
           border-2 border-solid flex items-center justify-center
           
           ${
@@ -264,35 +268,41 @@ const Game = () => {
     )
   }
 
+  // Import ResponsiveMoneySidebar
+  const ResponsiveMoneySidebar = React.lazy(() => import("@/components/ResponsiveMoneySideBar"))
+
   return (
-    <div className="w-full h-screen bg-black/30 pb-4">
-      <div className="grid grid-cols-[0.6fr_1fr_1.1fr_1.1fr_1fr_1.2fr] grid-rows-[1fr_1.8fr_0.7fr_0.7fr_0.8fr] w-full h-full">
+    <div className="w-full h-screen bg-black/30 pb-4 overflow-hidden">
+      {/* Mobile Money Sidebar */}
+      <Suspense fallback={null}>
+        <ResponsiveMoneySidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+      </Suspense>
+
+      {/* Desktop Layout */}
+      <div className="hidden md:grid md:grid-cols-[0.6fr_1fr_1.1fr_1.1fr_1fr_1.2fr] md:grid-rows-[1fr_1.8fr_0.7fr_0.7fr_0.8fr] w-full h-full">
         {/* LifeLines + HandleAudio */}
         <div className="col-start-1 row-start-1 row-span-5 flex flex-col items-center p-2">
           <div className="flex flex-col items-center justify-end flex-grow row-start-1 row-span-2">
             <HandleAudio toggleMute={toggleMute} setVolume={setVolume} isMuted={isMuted} volume={volume} />
             <div className="flex justify-center items-start pt-4">
-              <ReportButton username ={user?.username|| ''} questionId={currentQuestion.id} />
+              <ReportButton username={user?.username || ""} questionId={currentQuestion.id} />
             </div>
           </div>
-          <div className="flex items-center flex-grow row-start-3 row-span-3 z-100">
+          <div className="flex items-center flex-grow row-start-3 row-span-3 z-10">
             {currentQuestionIndex !== 15 && <LifeLines disable={gameState.selectedAnswer !== null} />}
           </div>
-          
         </div>
 
         {/* QuitButton */}
         <div className="col-start-2 row-start-1 row-span-2 flex flex-col">
-          
           <div className="h-full flex items-end justify-center">
             {currentQuestionIndex !== 0 && gameState.selectedAnswer === null ? (
               <QuitButton />
             ) : (
-              <div className="flex flex-grow w-full" /> // Reserve space if QuitButton not visible
+              <div className="flex flex-grow w-full" />
             )}
           </div>
         </div>
-
 
         {/* ClockTimer */}
         <div className="col-start-3 row-start-1 col-span-2 row-span-2 flex items-center justify-center">
@@ -301,17 +311,14 @@ const Game = () => {
 
         {/* NextButton */}
         <div className="col-start-5 row-start-1 row-span-2 flex flex-col">
-        
-          
           <div className="h-full flex items-end justify-center">
             {gameState.showNextButton ? (
               <NextButton handleNextQuestion={handleNextQuestion} />
             ) : (
-              <div className="w-[100px]" /> // Ya use invisible
+              <div className="w-[100px]" />
             )}
           </div>
         </div>
-
 
         {/* Question */}
         <div className="mt-3 col-start-2 row-start-3 col-span-4 p-2">
@@ -320,16 +327,72 @@ const Game = () => {
 
         {/* Options */}
         <div className="col-start-2 row-start-4 col-span-2 p-2">{renderOption(0)}</div>
-
         <div className="col-start-4 row-start-4 col-span-2 p-2">{renderOption(1)}</div>
-
         <div className="col-start-2 row-start-5 col-span-2 p-2">{renderOption(2)}</div>
-
         <div className="col-start-4 row-start-5 col-span-2 p-2">{renderOption(3)}</div>
 
         {/* MoneyLadder */}
         <div className="col-start-6 row-start-1 row-span-5">
           <MoneySideBar />
+        </div>
+      </div>
+
+      {/* Mobile Layout */}
+      <div className="md:hidden flex flex-col w-full h-full">
+        {/* Top Bar with Audio Controls and Lifelines */}
+        <div className="flex justify-between items-center p-2 pt-4">
+          <div className="flex items-center">
+            <HandleAudio toggleMute={toggleMute} setVolume={setVolume} isMuted={isMuted} volume={volume} />
+          </div>
+
+          {/* Report Button - Moved to avoid overlap with hamburger */}
+          <div className="flex justify-center items-center mr-14">
+            <ReportButton username={user?.username || ""} questionId={currentQuestion.id} />
+          </div>
+        </div>
+
+        {/* Lifelines */}
+        <div className="flex justify-center my-2">
+          {currentQuestionIndex !== 15 && <LifeLines disable={gameState.selectedAnswer !== null} />}
+        </div>
+
+        {/* Game Controls */}
+        <div className="flex justify-between items-center px-4 py-2">
+          {/* QuitButton */}
+          <div className="flex items-center">
+            {currentQuestionIndex !== 0 && gameState.selectedAnswer === null ? (
+              <QuitButton />
+            ) : (
+              <div className="w-[80px]" />
+            )}
+          </div>
+
+          {/* ClockTimer */}
+          <div className="flex justify-center">
+            {timer > 0 && <ClockTimer timeLeft={gameState.timeLeft} totalTime={timer} size={120} />}
+          </div>
+
+          {/* NextButton */}
+          <div className="flex items-center">
+            {gameState.showNextButton ? (
+              <NextButton handleNextQuestion={handleNextQuestion} />
+            ) : (
+              <div className="w-[80px]" />
+            )}
+          </div>
+        </div>
+
+        {/* Question */}
+        <div className="px-2 py-3">
+          <Questions currentQuestionIndex={currentQuestionIndex} ques={currentQuestion.question} />
+        </div>
+
+        {/* Options - Stacked vertically on mobile */}
+        <div className="flex flex-col gap-2 px-2 py-3 flex-grow">
+          <div className="flex-1">{renderOption(0)}</div>
+          <div className="flex-1">{renderOption(1)}</div>
+          <div className="flex-1">{renderOption(2)}</div>
+          <div className="flex-1">{renderOption(3)}</div>
         </div>
       </div>
     </div>

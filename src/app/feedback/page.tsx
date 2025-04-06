@@ -116,7 +116,7 @@ const handleSubmit = async () => {
                   placeholder="Write your message..."
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className="bg-purple-950/40 border-purple-500/30 focus:border-purple-400 text-purple-100 min-h-[200px]"
+                  className="bg-purple-950/40 border-purple-500/30 focus:border-purple-400 text-purple-100 min-h-[240px]"
                 />
               </div>
             </div>
