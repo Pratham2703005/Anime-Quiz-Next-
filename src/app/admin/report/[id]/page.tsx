@@ -1,7 +1,9 @@
+"use client"
 
+import { useEffect, useState } from "react"
+import { useParams } from "next/navigation"
 import { getReportById } from "@/actions/getReportById"
 import { getQuestionById } from "@/actions/getQuestionById"
-import { notFound } from "next/navigation"
 import EditForm from "@/components/admin/EditForm"
 import type { QuizQuestion } from "@/store/gameStore"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -9,32 +11,41 @@ import { Badge } from "@/components/ui/badge"
 import { AlertTriangle, MessageSquare, User } from "lucide-react"
 import NavBar from "@/components/NavBar"
 
-interface PageProps {
-  params: {
-    id: string;
-  };
+interface ReportInterface {
+  id :string,
+  questionId :string,
+  message: string | null,
+  checkMessage: string[],
+  username: string
 }
+export default function ReportPage() {
+  const params = useParams()
+  const [report, setReport] = useState<ReportInterface | null>(null)
+  const [question, setQuestion] = useState<QuizQuestion | null>(null)
 
-export default async function ReportPage({ params }: PageProps) {
-  const report = await getReportById(params.id)
-  if (!report) return notFound()
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!params?.id || typeof params.id !== "string") return
 
-  const question = (await getQuestionById(report.questionId)) as QuizQuestion
-  if (!question) return notFound()
+      const reportData = await getReportById(params.id)
+      if (!reportData) return
+      setReport(reportData)
+
+      const questionData = await getQuestionById(reportData.questionId)
+      if (questionData) setQuestion(questionData as QuizQuestion)
+    }
+
+    fetchData()
+  }, [params?.id])
+
+  if (!report || !question) return <div className="text-white p-4">Loading...</div>
 
   return (
     <div className="min-h-screen backdrop-blur-md bg-black/70 flex flex-col">
-      {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-purple-600/20 rounded-full blur-3xl animate-pulse"></div>
-        <div
-          className="absolute bottom-1/4 right-1/4 w-72 h-72 bg-indigo-600/20 rounded-full blur-3xl animate-pulse"
-          style={{ animationDelay: "1s" }}
-        ></div>
-        <div
-          className="absolute top-3/4 left-1/2 w-48 h-48 bg-pink-600/20 rounded-full blur-3xl animate-pulse"
-          style={{ animationDelay: "2s" }}
-        ></div>
+        <div className="absolute bottom-1/4 right-1/4 w-72 h-72 bg-indigo-600/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "1s" }}></div>
+        <div className="absolute top-3/4 left-1/2 w-48 h-48 bg-pink-600/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "2s" }}></div>
       </div>
 
       <NavBar showBackButton title="Report Details" />
@@ -60,7 +71,7 @@ export default async function ReportPage({ params }: PageProps) {
                 <span className="font-medium">Reasons:</span>
               </div>
               <div className="flex flex-wrap gap-2 ml-6">
-                {report.checkMessage?.map((reason, index) => (
+                {report.checkMessage?.map((reason: string, index: number) => (
                   <Badge key={index} className="bg-red-900/50 text-red-200 border border-red-700/50">
                     {reason}
                   </Badge>
@@ -87,4 +98,3 @@ export default async function ReportPage({ params }: PageProps) {
     </div>
   )
 }
-
