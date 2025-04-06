@@ -9,7 +9,13 @@ import { Badge } from "@/components/ui/badge"
 import { AlertTriangle, MessageSquare, User } from "lucide-react"
 import NavBar from "@/components/NavBar"
 
-export default async function ReportPage({ params }: { params: { id: string } }) {
+interface PageProps {
+  params: {
+    id: string;
+  };
+}
+
+export default async function ReportPage({ params }: PageProps) {
   const report = await getReportById(params.id)
   if (!report) return notFound()
 
