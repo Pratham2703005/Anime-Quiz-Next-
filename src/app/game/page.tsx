@@ -341,63 +341,57 @@ const Game = () => {
       </div>
 
       {/* Mobile Layout */}
-      <div className="md:hidden flex flex-col w-full h-full">
-        {/* Top Bar with Audio Controls and Lifelines */}
-        <div className="flex justify-between items-center p-2 pt-4">
-          <div className="flex items-center opacity-0 sm:opacity-1">
-            <HandleAudio toggleMute={toggleMute} setVolume={setVolume} isMuted={isMuted} volume={volume} />
-          </div>
-
-          {/* Report Button - Moved to avoid overlap with hamburger */}
-          <div className="flex justify-center items-center mr-14">
-            <ReportButton username={user?.username || ""} questionId={currentQuestion.id} />
-          </div>
-        </div>
-
-        {/* Lifelines */}
-        <div className="flex justify-center my-2">
-          {currentQuestionIndex !== 15 && <LifeLines disable={gameState.selectedAnswer !== null} />}
-        </div>
-
-        {/* Game Controls */}
-        <div className="flex justify-between items-center px-4 py-2">
-          {/* QuitButton */}
-          <div className="flex items-center">
-            {currentQuestionIndex !== 0 && gameState.selectedAnswer === null ? (
-              <QuitButton />
-            ) : (
-              <div className="w-[80px]" />
-            )}
-          </div>
-
-          {/* ClockTimer */}
-          <div className="flex justify-center">
-            {timer > 0 && <ClockTimer timeLeft={gameState.timeLeft} totalTime={timer} size={120} />}
-          </div>
-
-          {/* NextButton */}
-          <div className="flex items-center">
-            {gameState.showNextButton ? (
-              <NextButton handleNextQuestion={handleNextQuestion} />
-            ) : (
-              <div className="w-[80px]" />
-            )}
-          </div>
-        </div>
-
-        {/* Question */}
-        <div className="px-2 py-3">
-          <Questions currentQuestionIndex={currentQuestionIndex} ques={currentQuestion.question} />
-        </div>
-
-        {/* Options - Stacked vertically on mobile */}
-        <div className="flex flex-col gap-2 px-2 py-3 flex-grow">
-          <div className="flex-1">{renderOption(0)}</div>
-          <div className="flex-1">{renderOption(1)}</div>
-          <div className="flex-1">{renderOption(2)}</div>
-          <div className="flex-1">{renderOption(3)}</div>
-        </div>
+      <div className="md:hidden flex flex-col w-full h-full justify-between">
+  {/* Top Bar with Audio Controls and Lifelines */}
+  <div>
+    <div className="flex justify-between items-center p-2 pt-4">
+      <div className="flex items-center opacity-0 sm:opacity-1">
+        <HandleAudio toggleMute={toggleMute} setVolume={setVolume} isMuted={isMuted} volume={volume} />
       </div>
+      <div className="flex justify-center items-center mr-14">
+        <ReportButton username={user?.username || ""} questionId={currentQuestion.id} />
+      </div>
+    </div>
+
+    <div className="flex justify-center my-2">
+      {currentQuestionIndex !== 15 && <LifeLines disable={gameState.selectedAnswer !== null} />}
+    </div>
+
+    <div className="flex justify-between items-center px-4 py-2">
+      <div className="flex items-center">
+        {currentQuestionIndex !== 0 && gameState.selectedAnswer === null ? (
+          <QuitButton />
+        ) : (
+          <div className="w-[80px]" />
+        )}
+      </div>
+      <div className="flex justify-center">
+        {timer > 0 && <ClockTimer timeLeft={gameState.timeLeft} totalTime={timer} size={170} />}
+      </div>
+      <div className="flex items-center">
+        {gameState.showNextButton ? (
+          <NextButton handleNextQuestion={handleNextQuestion} />
+        ) : (
+          <div className="w-[80px]" />
+        )}
+      </div>
+    </div>
+  </div>
+
+  {/* Bottom: Questions and Options */}
+  <div>
+    <div className="px-2">
+      <Questions currentQuestionIndex={currentQuestionIndex} ques={currentQuestion.question} />
+    </div>
+    <div className="flex flex-col gap-2 px-2 py-3">
+      <div className="flex-1">{renderOption(0)}</div>
+      <div className="flex-1">{renderOption(1)}</div>
+      <div className="flex-1">{renderOption(2)}</div>
+      <div className="flex-1">{renderOption(3)}</div>
+    </div>
+  </div>
+</div>
+
     </div>
   )
 }

@@ -20,4 +20,4 @@ export const categories = [
 
 export const feedback_reward = 500;
 
-export const domain = 'https://anime-quiz-next.vercel.app/';
+export const domain = 'https://localhost/3000/';
