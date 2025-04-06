@@ -67,8 +67,8 @@ const QuitButton = () => {
       className={`
         flex items-center justify-center
         bg-gradient-to-r from-red-600 to-red-800
-        text-white px-10 py-4
-        text-base font-bold rounded-lg
+        text-white px-3 py-2 sm:px-10 sm:py-4
+        text-sm sm:text-lg font-bold rounded-lg
         shadow-xl
         border-2 border-red-400
         disabled:opacity-50 disabled:cursor-not-allowed

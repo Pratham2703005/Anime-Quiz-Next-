@@ -65,14 +65,14 @@ export default function ReportButton({ username, questionId }: { username: strin
         onClick={() => setIsOpen(true)}
         variant="ghost"
         size="icon"
-        className="bg-red-900 hover:bg-red-950 text-[#ccc] hover:text-[#bbb] rounded-full p-7"
+        className="bg-red-900 hover:bg-red-950 text-[#ccc] hover:text-[#bbb] rounded-full p-5"
         disabled={isSubmitting}
         title="Report Question"
       >
         {isSubmitting ? (
-          <Loader2 className="animate-spin size-8" />
+          <Loader2 className="animate-spin h-3 w-3 sm:size-6" />
         ) : (
-          <AlertTriangle className="size-8" />
+          <AlertTriangle className="size-5 sm:size-6" />
         )}
       </Button>
 

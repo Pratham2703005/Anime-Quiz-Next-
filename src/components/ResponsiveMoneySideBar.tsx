@@ -14,6 +14,7 @@ interface ResponsiveMoneySidebarProps {
 const ResponsiveMoneySidebar: React.FC<ResponsiveMoneySidebarProps> = ({ isOpen, toggleSidebar }) => {
   // Close sidebar when clicking outside on mobile
   useEffect(() => {
+    
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement
       if (

@@ -17,6 +17,7 @@ import { useTickAudio } from "@/components/GamePanel/utility/SoundTicks"
 import HandleAudio from "@/components/GamePanel/HandleAudio"
 import { DecodeHTML } from "@/components/GamePanel/utility/DecodeHTML"
 import { getDisabledIndexes } from "@/components/GamePanel/utility/getdisableIndexes"
+import ResponsiveMoneySidebar from "@/components/ResponsiveMoneySideBar"
 
 type GameStateType = {
   selectedAnswer: string | null
@@ -238,6 +239,8 @@ const Game = () => {
     const isDisabled = disabledIndexes.includes(index)
 
     return (
+      
+      
       <motion.button
         key={index}
         initial={{ opacity: 0, x: -20 }}
@@ -265,12 +268,12 @@ const Game = () => {
       >
         <span className="text-sm sm:text-md md:text-xl">{DecodeHTML(option)}</span>
       </motion.button>
+      
     )
   }
 
   // Import ResponsiveMoneySidebar
-  const ResponsiveMoneySidebar = React.lazy(() => import("@/components/ResponsiveMoneySideBar"))
-
+  console.log("RENDER");
   return (
     <div className="w-full h-screen bg-black/30 pb-4 overflow-hidden">
       {/* Mobile Money Sidebar */}
@@ -288,7 +291,7 @@ const Game = () => {
               <ReportButton username={user?.username || ""} questionId={currentQuestion.id} />
             </div>
           </div>
-          <div className="flex items-center flex-grow row-start-3 row-span-3 z-10">
+          <div className="flex items-center flex-grow row-start-3 row-span-3 z-10 ">
             {currentQuestionIndex !== 15 && <LifeLines disable={gameState.selectedAnswer !== null} />}
           </div>
         </div>
@@ -326,10 +329,10 @@ const Game = () => {
         </div>
 
         {/* Options */}
-        <div className="col-start-2 row-start-4 col-span-2 p-2">{renderOption(0)}</div>
-        <div className="col-start-4 row-start-4 col-span-2 p-2">{renderOption(1)}</div>
-        <div className="col-start-2 row-start-5 col-span-2 p-2">{renderOption(2)}</div>
-        <div className="col-start-4 row-start-5 col-span-2 p-2">{renderOption(3)}</div>
+        <div className="col-start-2 row-start-4 col-span-2 p-1 sm:p-2">{renderOption(0)}</div>
+        <div className="col-start-4 row-start-4 col-span-2 p-1 sm:p-2">{renderOption(1)}</div>
+        <div className="col-start-2 row-start-5 col-span-2 p-1 sm:p-2">{renderOption(2)}</div>
+        <div className="col-start-4 row-start-5 col-span-2 p-1 sm:p-2">{renderOption(3)}</div>
 
         {/* MoneyLadder */}
         <div className="col-start-6 row-start-1 row-span-5">
@@ -341,7 +344,7 @@ const Game = () => {
       <div className="md:hidden flex flex-col w-full h-full">
         {/* Top Bar with Audio Controls and Lifelines */}
         <div className="flex justify-between items-center p-2 pt-4">
-          <div className="flex items-center">
+          <div className="flex items-center opacity-0 sm:opacity-1">
             <HandleAudio toggleMute={toggleMute} setVolume={setVolume} isMuted={isMuted} volume={volume} />
           </div>
 

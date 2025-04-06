@@ -39,8 +39,12 @@ const LifeLines = ({ disable }: { disable: boolean }) => {
     setSelectedLifeline(null)
   }
 
+  const hasTrue = Object.values(lifeLines).some(val => val === true);
+
   return (
+    
     <div className="flex flex-row md:flex-col justify-center flex-grow">
+      {hasTrue && (
       <div className="flex md:max-h-[50%] flex-row md:flex-col items-center justify-evenly h-full bg-slate-800/80 py-2 md:py-6 px-3 border-[#8200db] border-4 rounded-2xl shadow-lg shadow-purple-500/20">
         {lifelineKeys.map(
           (lifeline, index) =>
@@ -73,6 +77,8 @@ const LifeLines = ({ disable }: { disable: boolean }) => {
             ),
         )}
       </div>
+
+      )}
 
       {/* Confirmation Dialog */}
       <ConfirmationDialog

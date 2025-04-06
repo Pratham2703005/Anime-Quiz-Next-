@@ -27,9 +27,9 @@ export default function HandleAudio({ toggleMute, setVolume, isMuted, volume }: 
         onMouseLeave={() => setShowSlider(false)}
       >
         {isMuted ? (
-          <VolumeX size={36} className="text-purple-200" />
+          <VolumeX size={24} className="text-purple-200" />
         ) : (
-          <Volume2 size={36} className="text-purple-200" />
+          <Volume2 size={24} className="text-purple-200" />
         )}
       </motion.button>
 

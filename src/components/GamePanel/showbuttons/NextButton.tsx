@@ -70,8 +70,8 @@ const NextButton = ({ handleNextQuestion }) => {
             
             flex items-center justify-center
             bg-gradient-to-r from-purple-600 to-purple-800
-            text-white px-10 py-4
-            text-base font-bold rounded-lg
+            text-white px-3 py-2 sm:px-10 sm:py-4
+            text-sm sm:text-lg font-bold rounded-lg
             shadow-xl
             border-2 border-purple-400
             disabled:opacity-50 disabled:cursor-not-allowed
@@ -94,7 +94,7 @@ const NextButton = ({ handleNextQuestion }) => {
           
           {/* Content with z-index to stay above the animation */}
           <span className="mr-2 relative z-10">Next</span>
-          <span className="font-extrabold relative z-10">{moneyLadder[nextQuestionIndex]}</span>
+          <span className="font-bold relative z-10">{moneyLadder[nextQuestionIndex]}</span>
         </button>
      
     )
