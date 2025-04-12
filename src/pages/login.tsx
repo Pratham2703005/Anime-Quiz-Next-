@@ -46,7 +46,6 @@ const Login = () => {
       })
       const responseData = await response.json()
       if (!response.ok) throw new Error(responseData.message || "Login failed")
-      console.log("User logged in successfully:", responseData)
       setUser({ ...responseData.userInfo, coinString: formatCurrency(responseData.userInfo.coins) })
       const allNotifications = responseData.notifications;
       setNotification(allNotifications);

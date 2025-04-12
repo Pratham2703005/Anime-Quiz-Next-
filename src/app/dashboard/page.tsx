@@ -74,7 +74,7 @@ export default function Dashboard() {
                 <div className="max-w-5xl h-full flex flex-col justify-evenly mx-auto  mt-0 ">
                   {/* Top 3 players */}
                   {users.length > 0 && (
-                    <DashTopPlayers length={users.length} firstPlayer={users[0]} secondPlayer={users[0]} thirdPlayer={users[0]} />
+                    <DashTopPlayers length={users.length} firstPlayer={users[0]} secondPlayer={users[1]} thirdPlayer={users[2]} />
                   )}
                   {/* Leaderboard table */}
                   <DashLeaderBoard users={users} currentUserRank={currentUserRank}/>

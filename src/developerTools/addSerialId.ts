@@ -16,7 +16,6 @@ export async function updateQuizSerialIds() {
             data: { serial_id: count++ },
         });
     }
-    console.log("SUCCESS");
 }
 
 //write ts-node src/file_name.ts

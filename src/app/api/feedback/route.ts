@@ -5,7 +5,6 @@ import { prisma } from "@/lib/prisma";
 import { feedback_reward } from "@/ControlData";
 export async function POST(req:NextRequest){
     const data = await req.json();
-    console.log(data);
     if(!data.message){
         return NextResponse.json({message:"Please Write a Message"})
     }

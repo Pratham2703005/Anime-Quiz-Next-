@@ -4,7 +4,6 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
     try {
         const { username, coins } = await req.json();
-        console.log("Received body:", { username, coins });
 
         if (!username) {
             throw new Error("Username is missing or invalid");
@@ -14,8 +13,7 @@ export async function POST(req: NextRequest) {
             throw new Error("Coins must be a string");
         }
 
-        const cleanedCoins = Number(coins.replace(/[^0-9.-]+/g, "")) / 2;
-        console.log("cleaned coins:", cleanedCoins);
+        const cleanedCoins = Number(coins.replace(/[^0-9.-]+/g, ""));
 
         if (isNaN(cleanedCoins)) {
             throw new Error("cleanedCoins is NaN");

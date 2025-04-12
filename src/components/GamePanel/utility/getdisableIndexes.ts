@@ -1,5 +1,4 @@
 export const getDisabledIndexes = (options, correctAnswer, lifeline) => {
-    console.log(options, correctAnswer);
   
     const incorrectIndexes = options
       .map((option, index) => (option !== correctAnswer ? index : null))

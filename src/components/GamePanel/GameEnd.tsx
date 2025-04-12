@@ -37,7 +37,6 @@ const GameEnd = ({ username = 'guest', score, winningAmount }: { username: strin
 
         const data = await response.json()
         if (data.user === undefined) throw new Error("Server Error")
-        console.log("-----",data);
         setUser({
           username: user?.username || 'guest',
           ranking: user?.ranking || 0,

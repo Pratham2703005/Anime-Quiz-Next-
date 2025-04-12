@@ -4,7 +4,6 @@ import { NextRequest, NextResponse } from "next/server"
 export async function POST(request: NextRequest) {
   try {
     const {name, newName } = await request.json()
-    console.log("recieved on server :", name, " ",newName);
     if (!name || name.trim() === "" || !newName || newName.trim()==="" ) {
       return NextResponse.json({ error: "Username cannot be empty" }, { status: 400 })
     }
@@ -12,7 +11,6 @@ export async function POST(request: NextRequest) {
     const isUserAlreadyExist = await prisma.user.findUnique({
       where: {username : newName}
     })
-    console.log("--------",isUserAlreadyExist);
     if(isUserAlreadyExist){
       throw new Error("Username Already Exist");
     }

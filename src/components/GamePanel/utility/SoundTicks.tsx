@@ -1,6 +1,7 @@
 'use client';
 import { useGameStore } from '@/store/gameStore';
 import { useEffect, useRef, useState } from 'react';
+import { toast } from 'sonner';
 
 export const useTickAudio = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -25,7 +26,7 @@ export const useTickAudio = () => {
 
       // Safely play the audio
       audio.play().catch((err) => {
-        console.warn("Audio play error:", err.message);
+        toast(`Audio Play Error: ${err.message}`)
       });
     }
 
@@ -40,7 +41,7 @@ export const useTickAudio = () => {
   const playSound = () => {
     if (audioRef.current) {
       audioRef.current.play().catch((err) => {
-        console.warn("Play error:", err.message);
+        toast(`Play error: ${err.message}`);
       });
     }
   };
@@ -60,7 +61,7 @@ export const useTickAudio = () => {
     if (audioRef.current) {
       audioRef.current.currentTime = 0;
       audioRef.current.play().catch((err) => {
-        console.warn("Reset play error:", err.message);
+        toast(`Reset play error: ${err.message}`);
       });
     }
   };
