@@ -3,7 +3,19 @@
 import { useUserStore } from "@/store/userStore"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { Gamepad2, BarChart3, User2, Bell, BellPlus, Coins, PlusCircle, Send } from "lucide-react"
+import {
+  Gamepad2,
+  BarChart3,
+  User2,
+  Bell,
+  BellPlus,
+  Coins,
+  PlusCircle,
+  Send,
+  Code2,
+  ExternalLink,
+  BookOpen,
+} from "lucide-react"
 import { motion } from "framer-motion"
 import { useNotifications } from "@/store/notifications"
 import Image from "next/image"
@@ -46,7 +58,6 @@ const HomePage = () => {
       {/* Navbar */}
       <nav className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-gradient-to-r from-purple-900 to-indigo-900 text-white shadow-lg z-10">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
-          
           <div className="flex items-center space-x-1 sm:space-x-2">
             <Gamepad2 className="h-5 w-5 sm:h-6 sm:w-6 text-purple-300" />
             <h1 className="text-xl sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-200 to-indigo-100">
@@ -54,55 +65,76 @@ const HomePage = () => {
             </h1>
           </div>
 
-          {user && (
-            <div className="flex items-center gap-3 sm:gap-4">
-             
-              <Link
-                href="/notification"
-                className="flex items-center justify-center h-8 w-8 bg-purple-800/70 rounded-full border border-purple-600/50 hover:bg-purple-700/70 transition-colors relative"
-              >
-                {isNewNotification ? (
-                  <>
-                    <Bell className="h-4 w-4 text-yellow-300" />
-                    <span className="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full flex items-center justify-center text-[10px] text-white font-bold">
-                      {notifications?.filter((n) => !n.isClaimed ).length || ""}
-                    </span>
-                  </>
-                ) : (
-                  <BellPlus className="h-4 w-4 text-yellow-300" />
-                )}
-              </Link>
-              <Link
-                href="/profile"
-                className="flex items-center gap-1.5 bg-purple-800/70 px-3 py-1.5 rounded-full border border-purple-600/50 hover:bg-purple-700/70 transition-colors"
-              >
-                <Coins className="h-4 w-4 text-yellow-300" />
-                <span className="text-yellow-100 font-bold text-xs sm:text-sm">{user?.coinString ?? 0}</span>
-              </Link>
-              
-              <Link href="/profile" className="relative">
-                <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full overflow-hidden border-2 border-purple-400 shadow-md">
-                  {user.profilePic ? (
-                    <Image
-                      width={40}
-                      height={40}
-                      src={user.profilePic || "/placeholder.svg"}
-                      alt="Profile"
-                      className="h-full w-full object-cover"
-                    />
+          {/* How to Play Guide button */}
+          <div className="flex items-center gap-1.5 sm:gap-4">
+            <Link
+              href="https://github.com/Pratham2703005/Anime-Quiz-Next-/blob/main/README.md"
+              target="_blank"
+              className="hidden sm:flex items-center justify-center h-8 w-8 bg-purple-800/70 rounded-full border border-purple-600/50 hover:bg-purple-700/70 transition-colors relative"
+              title="How to Play"
+            >
+              <BookOpen className="h-4 w-4 text-yellow-300" />
+            </Link>
+
+            {user && (
+              <>
+                <Link
+                  href="/notification"
+                  className="flex items-center justify-center h-8 w-8 bg-purple-800/70 rounded-full border border-purple-600/50 hover:bg-purple-700/70 transition-colors relative"
+                  title="Notifications"
+                >
+                  {isNewNotification ? (
+                    <>
+                      <Bell className="h-4 w-4 text-yellow-300" />
+                      <span className="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full flex items-center justify-center text-[10px] text-white font-bold">
+                        {notifications?.filter((n) => !n.isClaimed).length || ""}
+                      </span>
+                    </>
                   ) : (
-                    <div className="h-full w-full bg-purple-700 flex items-center justify-center">
-                      <User2 className="h-4 w-4 sm:h-5 sm:w-5 text-purple-200" />
-                    </div>
+                    <BellPlus className="h-4 w-4 text-yellow-300" />
                   )}
-                </div>
-              </Link>
-            </div>
-          )}
+                </Link>
+                <Link
+                  href="/profile"
+                  className="flex items-center gap-1.5 bg-purple-800/70 px-3 py-1.5 rounded-full border border-purple-600/50 hover:bg-purple-700/70 transition-colors"
+                >
+                  <Coins className="h-4 w-4 text-yellow-300" />
+                  <span className="text-yellow-100 font-bold text-xs sm:text-sm">{user?.coinString ?? 0}</span>
+                </Link>
+
+                <Link href="/profile" className="relative">
+                  <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full overflow-hidden border-2 border-purple-400 shadow-md">
+                    {user.profilePic ? (
+                      <Image
+                        width={40}
+                        height={40}
+                        src={user.profilePic || "/placeholder.svg"}
+                        alt="Profile"
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <div className="h-full w-full bg-purple-700 flex items-center justify-center">
+                        <User2 className="h-4 w-4 sm:h-5 sm:w-5 text-purple-200" />
+                      </div>
+                    )}
+                  </div>
+                </Link>
+              </>
+            )}
+          </div>
         </div>
       </nav>
 
-      
+      {/* Mobile How to Play button (only visible on small screens) */}
+      <div className="sm:hidden flex justify-end mt-4 z-10">
+        <Link
+          href="https://github.com/Pratham2703005/Anime-Quiz-Next-/blob/main/README.md"
+          target="_blank"
+          className="flex items-center gap-1.5 bg-purple-800/70 p-1.5 rounded-full border border-purple-600/50 hover:bg-purple-700/70 transition-colors mr-4"
+        >
+          <BookOpen className="h-4 w-4 text-yellow-300" />
+        </Link>
+      </div>
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col items-center justify-center gap-6 sm:gap-8 p-4 sm:p-6 z-10 mb-15 sm:mb-0">
@@ -134,7 +166,7 @@ const HomePage = () => {
           </motion.div>
 
           <div className="grid grid-cols-2 gap-4">
-          <motion.div variants={itemVariants}>
+            <motion.div variants={itemVariants}>
               <Link href="/feedback" className="w-full block">
                 <Button
                   variant="outline"
@@ -145,7 +177,6 @@ const HomePage = () => {
                 </Button>
               </Link>
             </motion.div>
-            
 
             <motion.div variants={itemVariants}>
               <Link href="/contribute" className="w-full block">
@@ -160,22 +191,46 @@ const HomePage = () => {
             </motion.div>
           </div>
           <motion.div variants={itemVariants}>
-              <Link href="/dashboard" className="w-full block">
-                <Button
-                  variant="outline"
-                  className="w-full h-12 sm:h-14 text-base sm:text-lg font-medium bg-slate-800/80 text-slate-300 hover:bg-slate-700/80 border border-slate-600/50 shadow-md rounded-xl hover:text-slate-100"
-                >
-                  <BarChart3 className="mr-2 h-4 w-4 sm:h-5 sm:w-5 text-purple-300" />
-                  Dashboard
-                </Button>
-              </Link>
-            </motion.div>
-          
+            <Link href="/dashboard" className="w-full block">
+              <Button
+                variant="outline"
+                className="w-full h-12 sm:h-14 text-base sm:text-lg font-medium bg-slate-800/80 text-slate-300 hover:bg-slate-700/80 border border-slate-600/50 shadow-md rounded-xl hover:text-slate-100"
+              >
+                <BarChart3 className="mr-2 h-4 w-4 sm:h-5 sm:w-5 text-purple-300" />
+                Dashboard
+              </Button>
+            </Link>
+          </motion.div>
         </motion.div>
+      </div>
+
+      {/* Footer with GitHub and Portfolio links */}
+      <div className="hidden sm:block max-w-7xl mx-auto w-full py-4 z-10">
+        <div className="w-full ml-auto flex justify-end gap-4 mr-4">
+          <a
+            href="https://github.com/Pratham2703005/Anime-Quiz-Next-"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center h-10 w-10 bg-purple-800/70 rounded-full border border-purple-600/50 hover:bg-purple-700/70 transition-colors"
+            aria-label="GitHub Repository"
+            title="Contribute in Code Here"
+          >
+            <Code2 className="h-5 w-5 text-purple-200" />
+          </a>
+          <a
+            href="https://portfolio-azure-theta-10.vercel.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center h-10 w-10 bg-purple-800/70 rounded-full border border-purple-600/50 hover:bg-purple-700/70 transition-colors"
+            aria-label="Portfolio"
+            title="My Website"
+          >
+            <ExternalLink className="h-5 w-5 text-purple-200" />
+          </a>
+        </div>
       </div>
     </div>
   )
 }
 
 export default HomePage
-

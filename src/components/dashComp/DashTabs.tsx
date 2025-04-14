@@ -4,7 +4,7 @@ import { Sparkles, Trophy } from 'lucide-react'
 
 const DashTabs = ({ activeTab, setActiveTab }: { activeTab: "leaderboard" | "stats", setActiveTab: (activeTab: "leaderboard" | "stats") => void }) => {
   return (
-    <div className="flex justify-center sm:justify-start py-3 px-4">
+    <div className="max-w-7xl mx-auto flex justify-center sm:justify-start py-3 px-4">
       <div className="bg-slate-800/50 backdrop-blur-sm rounded-full p-1 border border-purple-500/30 shadow-md">
         <Button
           variant="ghost"

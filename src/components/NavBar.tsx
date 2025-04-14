@@ -1,7 +1,7 @@
 'use client';
 import { useNotifications } from '@/store/notifications';
 import { useUserStore } from '@/store/userStore'
-import { ArrowLeft, Bell, BellPlus, Coins, Gamepad2, User2 } from 'lucide-react'
+import { ArrowLeft, Bell, BellPlus, BookOpen, Coins, Gamepad2, User2 } from 'lucide-react'
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react'
@@ -36,6 +36,14 @@ const NavBar = ({ showBackButton = false, title }) => {
 
                 {user && (
                     <div className="flex items-center gap-3 sm:gap-4">
+                        <Link
+                            href="https://github.com/Pratham2703005/Anime-Quiz-Next-/blob/main/README.md"
+                            target="_blank"
+                            className="hidden sm:flex items-center justify-center h-8 w-8 bg-purple-800/70 rounded-full border border-purple-600/50 hover:bg-purple-700/70 transition-colors relative"
+                            title="How to Play"
+                            >
+                            <BookOpen className="h-4 w-4 text-yellow-300" />
+                        </Link>
 
                         {title !== "Notifications" && (
                             <Link

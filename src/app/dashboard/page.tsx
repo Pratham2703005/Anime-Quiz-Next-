@@ -55,7 +55,7 @@ export default function Dashboard() {
       <NavBar showBackButton title="Dashboard"/>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col overflow-auto sm:overflow-hidden">
+      <div className=" flex-1 flex flex-col overflow-auto sm:overflow-hidden">
         {loading ? (
           <div className="flex-1 flex items-center justify-center">
             <SpinningCubeLoader
